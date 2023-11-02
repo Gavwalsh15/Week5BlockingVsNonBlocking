@@ -19,14 +19,18 @@ public class FeignController {
     public String getFeignData() throws Exception, InterruptedException{
         long startTime = System.currentTimeMillis();
 
-        List<CompletableFuture><TodoResponse> futures = new ArrayList<>()
+        List<CompletableFuture<TodoResponse>> futures = new ArrayList<>();
 
         for(int i = 0; i < 10; i++){
             CompletableFuture<TodoResponse> future = CompletableFuture.supplyAsync(() -> feignService.fetchData());
+            futures.add(future);
         }
+
+        CompletableFuture<Void> allOf = CompletableFuture.allOf(futures.toArray(new CompletableFuture[0]));
+
+        allOf.get();
         long endTime = System.currentTimeMillis();
         return "Total run time: " + (endTime - startTime) + "ms";
     }
+ }
 
-    }
-}
