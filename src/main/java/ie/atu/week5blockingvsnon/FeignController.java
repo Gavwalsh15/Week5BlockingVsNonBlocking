@@ -32,5 +32,10 @@ public class FeignController {
         long endTime = System.currentTimeMillis();
         return "Total run time: " + (endTime - startTime) + "ms";
     }
+
+    @GetMapping("/ToDos")
+    public Object ToDos(){
+        return feignService.fetchData196();
+    }
  }
 
